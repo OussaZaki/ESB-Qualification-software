@@ -5,7 +5,6 @@
  */
 package controller;
 
-import presenter.LogGetter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.Thread.sleep;

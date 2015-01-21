@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package presenter;
+package controller;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
