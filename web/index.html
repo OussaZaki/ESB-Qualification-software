@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>‌​
+        <script src="js/formHider.js"></script>
+        <title>Scenario builder</title>
+    </head>
+    <body>
+        <div>Build your scenario</div>
+
+        <form name="number" action="Luncher" method=post>
+            <label for="scName">Nom du scenario</label>
+            <input type="text" name="scName" placeholder="Specify a name for the scenario "/>
+            <br>
+            <label for="number">Choose the number of C/P</label>
+            <select name="number" id="number">
+                <option>Choose a number</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            <br>
+            <div id="peer1" style="display:none;">
+                <label for="req1">Request number for the consumer</label>
+                <input type="text" name="req1" placeholder="Specify the number of requests "/>
+                <label for="process1">Processing time for the provider</label>
+                <input type="text" name="process1" placeholder="Specify the processing time "/>
+                <label for="data1">data exchange for the provider</label>
+                <input type="text" name="data1" placeholder="Specify the data exchange size "/>
+                <br>
+            </div>
+            <div id="peer2" style="display:none;">
+                <label for="req2">Request number for the consumer</label>
+                <input type="text" name="req2" placeholder="Specify the number of requests "/>
+                <label for="process2">Processing time for the provider</label>
+                <input type="text" name="process2" placeholder="Specify the processing time "/>
+                <label for="data2">data exchange for the provider</label>
+                <input type="text" name="data2" placeholder="Specify the data exchange size "/>
+                <br>
+            </div>
+            <div id="peer3" style="display:none;">
+                <label for="req3">Request number for the consumer</label>
+                <input type="text" name="req3" placeholder="Specify the number of requests "/>
+                <label for="process3">Processing time for the provider</label>
+                <input type="text" name="process3" placeholder="Specify the processing time "/>
+                <label for="data3">data exchange for the provider</label>
+                <input type="text" name="data3" placeholder="Specify the data exchange size "/>
+                <br>
+            </div>
+            <div id="peer4" style="display:none;">
+                <label for="req4">Request number for the consumer</label>
+                <input type="text" name="req4" placeholder="Specify the number of requests "/>
+                <label for="process4">Processing time for the provider</label>
+                <input type="text" name="process4" placeholder="Specify the processing time "/>
+                <label for="data4">data exchange for the provider</label>
+                <input type="text" name="data4" placeholder="Specify the data exchange size "/>
+                <br>
+            </div>
+            <div id="peer5" style="display:none;">
+                <label for="req5">Request number for the consumer</label>
+                <input type="text" name="req5" placeholder="Specify the number of requests "/>
+                <label for="process5">Processing time for the provider</label>
+                <input type="text" name="process5" placeholder="Specify the processing time "/>
+                <label for="data5">data exchange for the provider</label>
+                <input type="text" name="data5" placeholder="Specify the data exchange size "/>
+                <br>
+            </div>
+            <div id="submit" >
+                <input type="submit" value="Executer le scenario!">
+            </div>
+        </form>
+
+    </body>
+</html>
