@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Monotoring ESB</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+    </head>
+    <body>
+    <center><h1>Open ESB Dashboard</h1></center>
+    <div  class="row">
+        <div id="memory" class="col-lg-4" ></div>
+        <div id="thread"  class="col-lg-4" ></div>
+        <div id="systemLoad"  class="col-lg-4" ></div>
+    </div>
+     <center><h1>GlassFish Consumer/Provider Dashboard</h1></center>
+    <div  class="row">
+        <div id="memoryG" class="col-lg-4" ></div>
+        <div id="threadG"  class="col-lg-4" ></div>
+        <div id="systemLoadG"  class="col-lg-4" ></div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.js"></script>
+    <script src="http://jolokia.org/dist/1.0.6/js/jolokia.js"></script>
+    <script src="http://jolokia.org/dist/1.0.6/js/jolokia-simple.js"></script>
+    <script src="http://code.highcharts.com/highcharts.src.js"></script>
+    
+    <script id="source" language="javascript" type="text/javascript">
+        var jolokia = new Jolokia("http://130.211.55.72:8080/jolokia-war-1.2.3");
+        var jolokiaG = new Jolokia("http://23.251.142.243:8080/jolokia-war-1.2.3");
+        $('#memory').ready(function() {
+            var chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'memory',
+                    defaultSeriesType: 'spline',
+                    events: {
+                        load: function() {
+                            var series = this.series;
+                            setInterval(function() {
+                                var x = (new Date()).getTime();
+                                var memoryUsed = jolokia.getAttribute("java.lang:type=Memory", "HeapMemoryUsage", "used");
+                                var memoryCommitted = jolokia.getAttribute("java.lang:type=Memory", "HeapMemoryUsage", "committed");
+                                var memoryMax = jolokia.getAttribute("java.lang:type=Memory", "HeapMemoryUsage", "max");
+                                series[0].addPoint({
+                                    x: new Date().getTime(),
+                                    y: parseInt(memoryUsed)
+                                }, true, series[0].data.length >= 50);
+                                series[1].addPoint({
+                                    x: new Date().getTime(),
+                                    y: parseInt(memoryCommitted)
+                                }, true, series[1].data.length >= 50);
+                            }, 1000);
+                          
+                        }
+                    }
+                },
+                title: {
+                    text: 'HeapMemoryUsage'
+                },
+                xAxis: {
+                    type: 'datetime'
+                },
+                yAxis: {
+                    title: { text: 'HeapMemoryUsage' }
+                },
+                series: [{
+                        data: [],
+                        name: 'Used Memory'
+                    },
+                    {
+                        data: [],
+                        name: 'Memory Max'
+                    }
+                ]
+            });
+        });      
+        $('#thread').ready(function() {
+          //  var jolokia = new Jolokia("http://130.211.55.72:8080/jolokia-war-1.2.3");
+ 
+            var chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'thread',
+                    defaultSeriesType: 'spline',
+                    events: {
+                        load: function() {
+                            var series = this.series[0];
+                            setInterval(function() {
+                                var x = (new Date()).getTime();
+                                var threadUsed = jolokia.getAttribute("java.lang:type=Threading", "ThreadCount");
+                                //console.log(threadUsed);
+                                series.addPoint({
+                                    x: new Date().getTime(),
+                                    y: parseInt(threadUsed)
+                                }, true, series.data.length >= 50);
+                            }, 1000);
+                        }
+                    }
+                },
+                title: {
+                    text: 'Threading'
+                },
+                xAxis: {
+                    type: 'datetime'
+                },
+                yAxis: {
+                    title: { text: 'ThreadCount' }
+                },
+                series: [{
+                        data: [],
+                        name: 'ThreadCount'
+                    }]
+            });
+        });
+        $('#systemLoad').ready(function() {
+            //var jolokia = new Jolokia("http://130.211.55.72:8080/jolokia-war-1.2.3");
+ 
+            var chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'systemLoad',
+                    defaultSeriesType: 'spline',
+                    events: {
+                        load: function() {
+                            var series = this.series[0];
+                            setInterval(function() {
+                                var x = (new Date()).getTime();
+                                var systemLoadAverage = jolokia.getAttribute("java.lang:type=OperatingSystem", "SystemLoadAverage");
+                                series.addPoint({
+                                    x: new Date().getTime(),
+                                    y: parseInt(systemLoadAverage)
+                                }, true, series.data.length >= 50);
+                            }, 1000);
+                        }
+                    }
+                },
+                title: {
+                    text: 'Operating System'
+                },
+                xAxis: {
+                    type: 'datetime'
+                },
+                yAxis: {
+                    title: { text: 'systemLoadAverage' }
+                },
+                series: [{
+                        data: [],
+                        name: 'systemLoadAverage'
+                    }]
+            });
+        });
+            
+            
+            
+        $('#memoryG').ready(function() {   
+            var chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'memoryG',
+                    defaultSeriesType: 'spline',
+                    events: {
+                        load: function() {
+                            var series = this.series;
+                            setInterval(function() {
+                                var x = (new Date()).getTime();
+                                var memoryUsed = jolokiaG.getAttribute("java.lang:type=Memory", "HeapMemoryUsage", "used");
+                                var memoryCommitted = jolokiaG.getAttribute("java.lang:type=Memory", "HeapMemoryUsage", "committed");
+                                var memoryMax = jolokiaG.getAttribute("java.lang:type=Memory", "HeapMemoryUsage", "max");
+                                series[0].addPoint({
+                                    x: new Date().getTime(),
+                                    y: parseInt(memoryUsed)
+                                }, true, series[0].data.length >= 50);
+                                series[1].addPoint({
+                                    x: new Date().getTime(),
+                                    y: parseInt(memoryCommitted)
+                                }, true, series[1].data.length >= 50);
+                            }, 1000);
+                          
+                        }
+                    }
+                },
+                title: {
+                    text: 'HeapMemoryUsage'
+                },
+                xAxis: {
+                    type: 'datetime'
+                },
+                yAxis: {
+                    title: { text: 'HeapMemoryUsage' }
+                },
+                series: [{
+                        data: [],
+                        name: 'Used Memory'
+                    },
+                    {
+                        data: [],
+                        name: 'Memory Max'
+                    }
+                ]
+            });
+        });      
+        $('#threadG').ready(function() {
+          //  var jolokia = new Jolokia("http://130.211.55.72:8080/jolokia-war-1.2.3");
+ 
+            var chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'threadG',
+                    defaultSeriesType: 'spline',
+                    events: {
+                        load: function() {
+                            var series = this.series[0];
+                            setInterval(function() {
+                                var x = (new Date()).getTime();
+                                var threadUsed = jolokiaG.getAttribute("java.lang:type=Threading", "ThreadCount");
+                                //console.log(threadUsed);
+                                series.addPoint({
+                                    x: new Date().getTime(),
+                                    y: parseInt(threadUsed)
+                                }, true, series.data.length >= 50);
+                            }, 1000);
+                        }
+                    }
+                },
+                title: {
+                    text: 'Threading'
+                },
+                xAxis: {
+                    type: 'datetime'
+                },
+                yAxis: {
+                    title: { text: 'ThreadCount' }
+                },
+                series: [{
+                        data: [],
+                        name: 'ThreadCount'
+                    }]
+            });
+        });
+        $('#systemLoadG').ready(function() {
+           // var jolokia = new Jolokia("http://130.211.55.72:8080/jolokia-war-1.2.3");
+ 
+            var chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'systemLoadG',
+                    defaultSeriesType: 'spline',
+                    events: {
+                        load: function() {
+                            var series = this.series[0];
+                            setInterval(function() {
+                                var x = (new Date()).getTime();
+                                var systemLoadAverage = jolokiaG.getAttribute("java.lang:type=OperatingSystem", "SystemLoadAverage");
+                                series.addPoint({
+                                    x: new Date().getTime(),
+                                    y: parseInt(systemLoadAverage)
+                                }, true, series.data.length >= 50);
+                            }, 1000);
+                        }
+                    }
+                },
+                title: {
+                    text: 'Operating System'
+                },
+                xAxis: {
+                    type: 'datetime'
+                },
+                yAxis: {
+                    title: { text: 'systemLoadAverage' }
+                },
+                series: [{
+                        data: [],
+                        name: 'systemLoadAverage'
+                    }]
+            });
+        });
+    </script>
+</body>
+</html>
+
