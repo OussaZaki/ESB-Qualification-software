@@ -11,6 +11,8 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
 import controller.LogHandler;
 import controller.Observer;
+import java.util.HashMap;
+import model.logHelper;
 
 /**
  *
@@ -71,11 +73,18 @@ public class LogGetter {
         }
     }
     
-    public static String getLog() {
+    public static String getLogString() {
         if (logHandler == null) {
             return "empty";
         } else {
             return logHandler.toString();
+        }
+    }
+   public static HashMap<String, HashMap<String, logHelper>> getLog() {
+        if (logHandler == null) {
+            return null;
+        } else {
+            return logHandler.getTheLog();
         }
     }
 }

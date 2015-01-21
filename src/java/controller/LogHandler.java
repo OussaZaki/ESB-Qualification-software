@@ -27,6 +27,10 @@ public class LogHandler {
         theLog = new HashMap<String, HashMap<String, logHelper>>();
     }
 
+    public HashMap<String, HashMap<String, logHelper>> getTheLog() {
+        return theLog;
+    }
+
     public void add(String log) {
         String[] data = log.split(";");
         // 0 : Id linkProviderConsumer

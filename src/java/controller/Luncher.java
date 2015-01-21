@@ -37,6 +37,7 @@ public class Luncher extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
+      
         response.setContentType("text/html;charset=UTF-8");
         ArrayList<Provider> providers = new ArrayList<>();
         ArrayList<Consumer> consumers = new ArrayList<>();
@@ -87,7 +88,24 @@ public class Luncher extends HttpServlet {
                         
                     }
                     // TO DO integrate results and graphs
-                    out.println(LogGetter.getLog().replaceAll("\n", "<br>"));
+                    
+                    LogHandler logHandler=new LogHandler();
+                    
+                    Result result=logHandler.fillInResultForm(LogGetter.getLog());
+                   
+                  
+                   String link="link"+1+"="+result.getLinksConsumerProvider()[0].getAverageResponseTime();
+        for (int j=1; j<result.getLinksConsumerProvider().length;j++) {
+           
+            link+="&link"+j+"="+result.getLinksConsumerProvider()[0].getAverageResponseTime();
+            }
+                    
+                      response.sendRedirect("html/chart.html?lost="+result.getTotalResult().getLostRequests()
+                              +"&min="+result.getTotalResult().getResponseTime().getMinResponseTime()
+                              +"&max="+result.getTotalResult().getResponseTime().getMaxResponseTime()
+                              +link);
+                   // out.println(LogGetter.getLog().replaceAll("\n", "<br>"));
+                 
                     //out.println("all good");
                 }
             }
@@ -127,7 +145,9 @@ public class Luncher extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+              
             processRequest(request, response);
+           
         } catch (Exception ex) {
             Logger.getLogger(Luncher.class.getName()).log(Level.SEVERE, null, ex);
         }
